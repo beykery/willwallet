@@ -17,6 +17,7 @@
 *.zip
 *.tar.gz
 *.rar
+*.impl
 target/
 .idea/
 log/
