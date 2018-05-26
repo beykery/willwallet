@@ -7,7 +7,9 @@ import java.security.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import org.beykery.util.bip44.Address;
 import org.beykery.util.bip44.HdKeyNode;
+import org.beykery.util.bip44.NetworkParameters;
 import org.beykery.util.bip44.hdpath.HdKeyPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,10 +61,6 @@ public class WillWallet
      * 助记词
      */
     private String mnemonic;
-    /**
-     * 助记词密码
-     */
-    private String passphrase;
     /**
      * 路径
      */
@@ -144,9 +142,9 @@ public class WillWallet
     /**
      * 创建新钱包（生成助记词）
      *
-     * @param password 助记词密码，也作为即将生成的wallet file的密码；如果助记词密码为空则不再生成wallet file
-     *                 imtoken助记词密码为null
-     * @param path     路径
+     * @param password 即将生成的wallet file的密码；如果密码为空则不再生成wallet file
+     *                 经查imtoken助记词密码为null，这里保持一致
+     * @param path     路径（可以不按照bip44要求）
      * @return
      * @throws org.web3j.crypto.CipherException
      */
@@ -156,7 +154,7 @@ public class WillWallet
         byte[] initialEntropy = new byte[16];
         secureRandom.nextBytes(initialEntropy);
         String mnemonic = MnemonicUtils.generateMnemonic(initialEntropy);
-        byte[] seed = MnemonicUtils.generateSeed(mnemonic, password);
+        byte[] seed = MnemonicUtils.generateSeed(mnemonic, null);
         ECKeyPair ecKeyPair = createBip44NodeFromSeed(seed, path);
         if (password != null)
         {
@@ -165,7 +163,6 @@ public class WillWallet
         wa.credentials = Credentials.create(ecKeyPair);
         wa.walletPass = password;
         wa.mnemonic = mnemonic;
-        wa.passphrase = password;
         wa.path = path;
         return wa;
     }
@@ -173,17 +170,17 @@ public class WillWallet
     /**
      * 载入一个钱包
      *
-     * @param password 助记词密码，也作为即将生成的wallet file的密码；如果助记词密码为空则不再生成wallet file
+     * @param password 即将生成的wallet file的密码；如果密码为空则不再生成wallet file
      *                 imtoken助记词密码为null
      * @param mnemonic 助记词
-     * @param path     路径 m/44'/60'/0'／0／0   m/purpse'/coin_type'/account'/change/address_index
+     * @param path     路径 m/44'/60'/0'／0／0  m/purpse'/coin_type'/account'/change/address_index
      * @return 钱包
      * @throws CipherException
      */
     public static WillWallet fromMnemonic(String password, String mnemonic, String path) throws CipherException
     {
         WillWallet wa = new WillWallet();
-        byte[] seed = MnemonicUtils.generateSeed(mnemonic, password);
+        byte[] seed = MnemonicUtils.generateSeed(mnemonic, null);
         ECKeyPair ecKeyPair = createBip44NodeFromSeed(seed, path);
         if (password != null)
         {
@@ -192,7 +189,6 @@ public class WillWallet
         wa.credentials = Credentials.create(ecKeyPair);
         wa.walletPass = password;
         wa.mnemonic = mnemonic;
-        wa.passphrase = password;
         wa.path = path;
         return wa;
     }
@@ -210,6 +206,7 @@ public class WillWallet
         HdKeyPath p = HdKeyPath.valueOf(path);
         HdKeyNode node = HdKeyNode.fromSeed(seed);
         node = node.createChildNode(p);
+        Address add=node.getPublicKey().toAddress(NetworkParameters.productionNetwork);
         byte[] privateKeyByte = node.getPrivateKey().getPrivateKeyBytes();
         ECKeyPair ecKeyPair = ECKeyPair.create(privateKeyByte);
         return ecKeyPair;
@@ -442,11 +439,11 @@ public class WillWallet
     /**
      * 助记词密码
      *
-     * @return 助记词密码
+     * @return 助记词密码(永远为null，跟imtoken保持一致)
      */
     public String getPassphrase()
     {
-        return passphrase;
+        return null;
     }
 
     /**
