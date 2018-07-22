@@ -6,9 +6,11 @@ import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.crypto.RawTransaction;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthTransaction;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.utils.Numeric;
 
 import java.lang.reflect.Method;
 import java.math.BigInteger;
@@ -24,13 +26,31 @@ public class Application {
      */
     public static final void main(String... args) throws Exception {
 
-        //String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
-        String url = "http://172.18.1.84:8334";
-        String address="0xbb02588c5c7d259e59161e0e04a933b13677fee4";
+//刻点历史上去
+        String data = "历史上的今天\n马其顿亚历山大大帝诞生";
+        String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
         WillContract contract = new WillContract(url);
-        BigInteger nonce=contract.nonce(address);
-        System.out.println(nonce);
+        String pvk = "xxxxxxxxxxxxxx";
+        String address = "0x8aCc161acB2626505755bBF36184841B8c099806";
+        String to = "0x5ef1A0B8F3EEFBc31f363cfc3A3590B29c825688";
+        WillWallet wallet = new WillWallet(pvk);
+        BigInteger nonce = contract.nonce(address);
+        BigInteger price = new BigInteger("4000000000");
+        BigInteger limit = new BigInteger("1500000");
+        BigInteger value = new BigInteger("100000000000000");
+        RawTransaction tr = RawTransaction.createTransaction(nonce, price, limit, to, value, Numeric.toHexString(data.getBytes("utf-8")));
+        String hex = wallet.signContractTransaction(tr);
+        String ret = contract.sendTransaction(hex);
+        System.out.println(ret);
 
+//        String tx = "0xf86b0385028c2d17a0825209949ea141cddd5c3ccde602f76b771cf4f154c95d1d865af3107a400080819ea077a9e1dd761fb2e4c132663fec01431f5f2014ec18a428c645df174d82c7b04aa065ffe1604c15e27c1b0aefeb58cf734e969fad41daedc48b7eee60670a299821";
+//
+//        //String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
+//        //String url = "http://172.18.1.84:8334";
+//        String url = "http://172.18.1.84:8334";
+//        WillContract contract = new WillContract(url);
+//        String ret = contract.sendTransaction(tx);
+//        System.out.println(ret);
 
 
 //        String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
@@ -49,8 +69,6 @@ public class Application {
 //        String ret = contract.execute(wallet.getCredentials(), transfer, contractAddress, price, limit, value);
 //        System.out.println(ret);
 //        System.out.println(contract.nonce(to));
-
-
 
 
 //        String url="https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
