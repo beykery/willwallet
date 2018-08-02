@@ -4,15 +4,16 @@
 ###坐标
 
 
-
+`  
 <dependency>
-    <groupId>org.beykery</groupId>
-    <artifactId>willwallet</artifactId>
-    <version>1.0.4</version>
-</dependency>
+     <groupId>org.beykery</groupId>
+     <artifactId>willwallet</artifactId>
+     <version>1.0.4</version>
+   </dependency>
+ `
+
 
 ###使用
-
 
              WillWallet wa = WillWallet.createWithMnemonic(null, "m/44'/60'/0'/0/0");
              String mnemonic = wa.getMnemonic();
