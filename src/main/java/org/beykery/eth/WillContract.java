@@ -159,19 +159,6 @@ public class WillContract {
         return ts;
     }
 
-    /**
-     * 发送签名过的交易
-     *
-     * @param hexValue 签名过的交易
-     * @return 交易hash
-     * @throws java.util.concurrent.ExecutionException
-     * @throws java.lang.InterruptedException
-     */
-    public String sendTransaction(String hexValue) throws ExecutionException, InterruptedException {
-        EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
-        String transactionHash = ethSendTransaction.getTransactionHash();
-        return transactionHash;
-    }
 
     /**
      * 查看交易状态
@@ -232,6 +219,43 @@ public class WillContract {
         String hexValue = Numeric.toHexString(signedMessage);
         EthSendTransaction transactionResponse = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
         return transactionResponse.getTransactionHash();
+    }
+
+    /**
+     * @param credentials     身份
+     * @param function        函数
+     * @param contractAddress 合约地址
+     * @param gasPrice
+     * @param gasLimit
+     * @return 签名结果
+     */
+    public String sign(Credentials credentials, Function function, String contractAddress, BigInteger gasPrice, BigInteger gasLimit, BigInteger value) {
+        BigInteger nonce = nonce(credentials.getAddress());
+        String encodedFunction = FunctionEncoder.encode(function);
+        RawTransaction rawTransaction = RawTransaction.createTransaction(
+                nonce,
+                gasPrice,
+                gasLimit,
+                contractAddress,
+                value,
+                encodedFunction);
+        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
+        String hexValue = Numeric.toHexString(signedMessage);
+        return hexValue;
+    }
+
+    /**
+     * 发送签名过的交易
+     *
+     * @param hexValue 签名过的交易
+     * @return 交易hash
+     * @throws java.util.concurrent.ExecutionException
+     * @throws java.lang.InterruptedException
+     */
+    public String sendTransaction(String hexValue) throws ExecutionException, InterruptedException {
+        EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
+        String transactionHash = ethSendTransaction.getTransactionHash();
+        return transactionHash;
     }
 
     /**
