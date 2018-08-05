@@ -207,6 +207,22 @@ public class WillContract {
      */
     public String execute(Credentials credentials, Function function, String contractAddress, BigInteger gasPrice, BigInteger gasLimit, BigInteger value) throws Exception {
         BigInteger nonce = nonce(credentials.getAddress());
+        return execute(credentials, nonce, function, contractAddress, gasPrice, gasLimit, value);
+    }
+
+    /**
+     * 执行合约方法（修改状态）
+     *
+     * @param credentials     身份
+     * @param function        函数
+     * @param contractAddress 合约地址
+     * @param gasPrice
+     * @param gasLimit
+     * @param nonce           nonce
+     * @return 交易的hash值
+     * @throws Exception
+     */
+    public String execute(Credentials credentials, BigInteger nonce, Function function, String contractAddress, BigInteger gasPrice, BigInteger gasLimit, BigInteger value) throws Exception {
         String encodedFunction = FunctionEncoder.encode(function);
         RawTransaction rawTransaction = RawTransaction.createTransaction(
                 nonce,
@@ -230,7 +246,20 @@ public class WillContract {
      * @return 签名结果
      */
     public String sign(Credentials credentials, Function function, String contractAddress, BigInteger gasPrice, BigInteger gasLimit, BigInteger value) {
-        BigInteger nonce = nonce(credentials.getAddress());
+        BigInteger nonce = this.nonce(credentials.getAddress());
+        return sign(credentials, nonce, function, contractAddress, gasPrice, gasLimit, value);
+    }
+
+    /**
+     * @param credentials     身份
+     * @param function        函数
+     * @param contractAddress 合约地址
+     * @param gasPrice
+     * @param gasLimit
+     * @param nonce           nonce
+     * @return 签名结果
+     */
+    public String sign(Credentials credentials, BigInteger nonce, Function function, String contractAddress, BigInteger gasPrice, BigInteger gasLimit, BigInteger value) {
         String encodedFunction = FunctionEncoder.encode(function);
         RawTransaction rawTransaction = RawTransaction.createTransaction(
                 nonce,

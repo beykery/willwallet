@@ -25,19 +25,27 @@ public class Application {
      * @param args
      */
     public static final void main(String... args) throws Exception {
-        String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
+
+
+//        String address = "0x8aCc161acB2626505755bBF36184841B8c099806";
+//        String contract = "0x6f259637dcd74c767781e37bc6133cd6a68aa161";
+//        String ret = erc20BalanceOf(address, contract);
+//        System.out.println(ret);
+
+
+//        String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
 //        String address="0x847b4b242c47fe148d03e5e2d78ce9e1f6571bb3";
 //        String contractAddress="0xe6824483e279d967ea6f8472ace7585862fa1185";
 //        String ret=erc20BalanceOf(address,contractAddress);
 //        System.out.println(ret);
 
         //String address="0x8aCc161acB2626505755bBF36184841B8c099806";
-         String address="0x847b4b242c47fe148d03e5e2d78ce9e1f6571bb3";
+//         String address="0x847b4b242c47fe148d03e5e2d78ce9e1f6571bb3";
         //String address="0x536ccE7DDE227F2e65EC1FB2b49a5Fc3DA64d99b";
-       // String url = "http://172.18.1.84:8334";
-        WillContract contract = new WillContract(url);
-        BigInteger nonce = contract.nonce(address);
-        System.out.println(nonce);
+        // String url = "http://172.18.1.84:8334";
+//        WillContract contract = new WillContract(url);
+//        BigInteger nonce = contract.nonce(address);
+//        System.out.println(nonce);
 
 //刻点历史上去
 //        String data = "历史上的今天\n马其顿亚历山大大帝诞生";
@@ -66,22 +74,22 @@ public class Application {
 //        System.out.println(ret);
 
 
-//        String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
-//        String pvk = "xxxxxxxxxxxxxxxx";
-//        String to = "0x9Ae269f41b3922948877905731c9D25c070b1bfd";
-//        String contractAddress = "0xcada12e8a6d51fdc7b824ee6ade22c853947875b";
-//        BigInteger token = new BigInteger("10000");
-//        BigInteger price = new BigInteger("1000000000");
-//        BigInteger limit = new BigInteger("150000");
-//
-//        BigInteger value=BigInteger.ZERO;
-//        WillWallet wallet = new WillWallet(pvk);
-//        WillContract contract = new WillContract(url);
-//        System.out.println(contract.nonce(to));
-//        Function transfer = WillContract.transfer(to, token);
-//        String ret = contract.execute(wallet.getCredentials(), transfer, contractAddress, price, limit, value);
-//        System.out.println(ret);
-//        System.out.println(contract.nonce(to));
+        String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
+        String pvk = "xxxxxxxxxxx";
+        String to = "0x9Ae269f41b3922948877905731c9D25c070b1bfd";
+        String contractAddress = "0xcada12e8a6d51fdc7b824ee6ade22c853947875b";
+        BigInteger token = new BigInteger("10000");
+        BigInteger price = new BigInteger("1000000000");
+        BigInteger limit = new BigInteger("150000");
+
+        BigInteger value=BigInteger.ZERO;
+        WillWallet wallet = new WillWallet(pvk);
+        WillContract contract = new WillContract(url);
+        System.out.println(contract.nonce(to));
+        Function transfer = WillContract.transfer(to, token);
+        String ret = contract.execute(wallet.getCredentials(), transfer, contractAddress, price, limit, value);
+        System.out.println(ret);
+        System.out.println(contract.nonce(to));
 
 
 //        String url="https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
