@@ -48,10 +48,10 @@ public class Application {
 //        System.out.println(nonce);
 
 //刻点历史上去
-//        String data = "历史上的今天\n马其顿亚历山大大帝诞生";
+//        String data = "2020年2月7日凌晨，文亮医生因感染新型冠状病毒，病重经抢救无效去世，享年34岁。为众人抱薪者，不可使其冻毙于风雪；为自由开道者，不可令其困厄于荆棘。秦人不暇自哀，而后人哀之；后人哀之而不鉴之，亦使后人而复哀后人也。";
 //        String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
 //        WillContract contract = new WillContract(url);
-//        String pvk = "xxxxxxxxxxxxxx";
+//        String pvk = "xxxxxxxx";
 //        String address = "0x8aCc161acB2626505755bBF36184841B8c099806";
 //        String to = "0x5ef1A0B8F3EEFBc31f363cfc3A3590B29c825688";
 //        WillWallet wallet = new WillWallet(pvk);
@@ -74,22 +74,22 @@ public class Application {
 //        System.out.println(ret);
 
 
-        String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
-        String pvk = "xxxxxxxxxxx";
-        String to = "0x9Ae269f41b3922948877905731c9D25c070b1bfd";
-        String contractAddress = "0xcada12e8a6d51fdc7b824ee6ade22c853947875b";
-        BigInteger token = new BigInteger("10000");
-        BigInteger price = new BigInteger("1000000000");
-        BigInteger limit = new BigInteger("150000");
-
-        BigInteger value=BigInteger.ZERO;
-        WillWallet wallet = new WillWallet(pvk);
-        WillContract contract = new WillContract(url);
-        System.out.println(contract.nonce(to));
-        Function transfer = WillContract.transfer(to, token);
-        String ret = contract.execute(wallet.getCredentials(), transfer, contractAddress, price, limit, value);
-        System.out.println(ret);
-        System.out.println(contract.nonce(to));
+//        String url = "https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
+//        String pvk = "xxxxxxxxxxx";
+//        String to = "0x9Ae269f41b3922948877905731c9D25c070b1bfd";
+//        String contractAddress = "0xcada12e8a6d51fdc7b824ee6ade22c853947875b";
+//        BigInteger token = new BigInteger("10000");
+//        BigInteger price = new BigInteger("1000000000");
+//        BigInteger limit = new BigInteger("150000");
+//
+//        BigInteger value=BigInteger.ZERO;
+//        WillWallet wallet = new WillWallet(pvk);
+//        WillContract contract = new WillContract(url);
+//        System.out.println(contract.nonce(to));
+//        Function transfer = WillContract.transfer(to, token);
+//        String ret = contract.execute(wallet.getCredentials(), transfer, contractAddress, price, limit, value);
+//        System.out.println(ret);
+//        System.out.println(contract.nonce(to));
 
 
 //        String url="https://mainnet.infura.io/iaosV7jPAld2pmo3he27";
