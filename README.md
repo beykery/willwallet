@@ -3,14 +3,13 @@
 
 ### 坐标
 
-
-`  
+```
 <dependency>
      <groupId>org.beykery</groupId>
      <artifactId>willwallet</artifactId>
      <version>1.0.5</version>
    </dependency>
- `
+```
 
 
 ### 使用
