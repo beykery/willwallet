@@ -173,7 +173,7 @@ public class WillWallet
      * @param password 即将生成的wallet file的密码；如果密码为空则不再生成wallet file
      *                 imtoken助记词密码为null
      * @param mnemonic 助记词
-     * @param path     路径 m/44'/60'/0'／0／0  m/purpse'/coin_type'/account'/change/address_index
+     * @param path     路径 m/44'/60'/0'/0/0  m/purpse'/coin_type'/account'/change/address_index
      * @return 钱包
      * @throws CipherException
      */
@@ -195,10 +195,10 @@ public class WillWallet
 
     /**
      * m/purpse'/coin_type'/account'/change/address_index
-     * m/44'/60'/0'／0／0
+     * m/44'/60'/0'/0/0
      *
      * @param seed 种子
-     * @param path 路径 m/44'/60'/0'／0／0
+     * @param path 路径 m/44'/60'/0'/0/0
      * @return key 秘钥
      */
     private static ECKeyPair createBip44NodeFromSeed(byte[] seed, String path)
