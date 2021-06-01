@@ -1,11 +1,14 @@
 package org.beykery.eth;
 
+import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeDecoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.DynamicArray;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.crypto.Hash;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthTransaction;
@@ -14,6 +17,7 @@ import org.web3j.utils.Numeric;
 
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -127,8 +131,59 @@ public class Application {
 //        System.out.println(symbol);
 //        BigInteger total=commonContract.totalSupply().send();
 //        System.out.println(total);
+
+
+        String node = "https://bsc-dataseed.binance.org";
+        String contractAddress = "0x84e087d4be5928c219b9dea8e087b8b737036f44";
+        String mdx = "0x9c65ab58d8d978db963e63f2bfb7121627e3a739";
+        BigInteger amount = one(18).multiply(BigInteger.valueOf(1));
+        Function function = new org.web3j.abi.datatypes.Function(
+                "deposit",
+                Arrays.<Type>asList(
+                        new Uint256(amount)),
+                Collections.<TypeReference<?>>emptyList());
+        final String encode = FunctionEncoder.encode(function);
+
+        WillContract contract = new WillContract(node);
+        String pvk = "xxxxxxxx";
+        String address = "0x8aCc161acB2626505755bBF36184841B8c099806";
+        String to = contractAddress;
+        WillWallet wallet = new WillWallet(pvk);
+        BigInteger nonce = contract.nonce(address);
+        BigInteger price = new BigInteger("500000000000");// 500gwei
+        BigInteger limit = new BigInteger("123403");
+        BigInteger value = new BigInteger("0");
+        RawTransaction tr = RawTransaction.createTransaction(nonce, price, limit, to, value, encode);
+        String hex = wallet.signContractTransaction(tr);
+        String ret = contract.sendTransaction(hex);
+        System.out.println(ret);
+
     }
 
+    /**
+     * hash
+     *
+     * @param hash
+     * @param time
+     * @param position
+     * @return
+     */
+    public static String sha256(String hash, long time, int position) {
+        String target = hash + time + position;
+        byte[] content = Hash.sha256(target.getBytes());
+        return Numeric.toHexString(content);
+    }
+
+    /**
+     * 1
+     *
+     * @param decimals
+     * @return
+     */
+    public static BigInteger one(int decimals) {
+        BigInteger bi = BigInteger.valueOf(10);
+        return bi.pow(decimals);
+    }
 
     /**
      * 查询erc20代币数量
