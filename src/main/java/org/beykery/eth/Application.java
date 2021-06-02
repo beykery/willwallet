@@ -165,7 +165,8 @@ public class Application {
                 RawTransaction tr = RawTransaction.createTransaction(nonce, price, limit, to, value, encode);
                 String hex = wallet.signContractTransaction(tr);
                 String hashLocal = Hash.sha3(hex);
-                if (contain(list, hashLocal)) {
+                String sha = sha256(hashLocal, blockTime + 3, 0);
+                if (contain(list, sha)) {
                     String hashRemote = contract.sendTransaction(hex);
                     System.out.println(hashRemote);
                     break;
