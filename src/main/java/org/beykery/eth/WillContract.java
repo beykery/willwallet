@@ -112,6 +112,17 @@ public class WillContract {
     }
 
     /**
+     * 当前块
+     *
+     * @return
+     * @throws IOException
+     */
+    public EthBlock currentBlock() throws IOException {
+        EthBlock block = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send();
+        return block;
+    }
+
+    /**
      * balanceOf函数
      *
      * @param address

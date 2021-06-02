@@ -132,32 +132,60 @@ public class Application {
 //        BigInteger total=commonContract.totalSupply().send();
 //        System.out.println(total);
 
+        burn();
 
+    }
+
+    private static void burn() throws Exception {
+        String pvk = "xxx";
+        String address = "0x8aCc161acB2626505755bBF36184841B8c099806";
         String node = "https://bsc-dataseed.binance.org";
         String contractAddress = "0x84e087d4be5928c219b9dea8e087b8b737036f44";
         String mdx = "0x9c65ab58d8d978db963e63f2bfb7121627e3a739";
         BigInteger amount = one(18).multiply(BigInteger.valueOf(1));
-        Function function = new org.web3j.abi.datatypes.Function(
-                "deposit",
-                Arrays.<Type>asList(
-                        new Uint256(amount)),
-                Collections.<TypeReference<?>>emptyList());
-        final String encode = FunctionEncoder.encode(function);
-
         WillContract contract = new WillContract(node);
-        String pvk = "xxxxxxxx";
-        String address = "0x8aCc161acB2626505755bBF36184841B8c099806";
         String to = contractAddress;
         WillWallet wallet = new WillWallet(pvk);
         BigInteger nonce = contract.nonce(address);
-        BigInteger price = new BigInteger("500000000000");// 500gwei
+        BigInteger price = new BigInteger("500000000000"); // 500gwei
         BigInteger limit = new BigInteger("123403");
         BigInteger value = new BigInteger("0");
-        RawTransaction tr = RawTransaction.createTransaction(nonce, price, limit, to, value, encode);
-        String hex = wallet.signContractTransaction(tr);
-        String ret = contract.sendTransaction(hex);
-        System.out.println(ret);
+        List<String> list = Arrays.asList("555", "33", "66", "88", "99");
 
+        while (true) {
+            long blockTime = contract.currentBlock().getBlock().getTimestamp().longValue();
+            long diff = blockTime * 1000 + 3000 - System.currentTimeMillis();
+            if (diff > 2000) {
+                Function function = new org.web3j.abi.datatypes.Function(
+                        "deposit",
+                        Arrays.<Type>asList(
+                                new Uint256(amount)),
+                        Collections.<TypeReference<?>>emptyList());
+                final String encode = FunctionEncoder.encode(function);
+                RawTransaction tr = RawTransaction.createTransaction(nonce, price, limit, to, value, encode);
+                String hex = wallet.signContractTransaction(tr);
+                String hashLocal = Hash.sha3(hex);
+                if (contain(list, hashLocal)) {
+                    String hashRemote = contract.sendTransaction(hex);
+                    System.out.println(hashRemote);
+                    break;
+                } else {
+                    System.out.println("未命中 - " + hashLocal);
+                    amount = amount.subtract(BigInteger.ONE);
+                }
+            }
+        }
+    }
+
+    /**
+     * 结尾
+     *
+     * @param list
+     * @param hashLocal
+     * @return
+     */
+    private static boolean contain(List<String> list, String hashLocal) {
+        return list.stream().anyMatch(hashLocal::endsWith);
     }
 
     /**
